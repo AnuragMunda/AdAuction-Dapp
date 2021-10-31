@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1-rc.0/web3.min.js" integrity="sha512-+4Gl8sbHe5qD5EQiPtIva4be9TwUmmzgYJUdGbhsLYNegQw4Quda/4QdZpJzx8cHq2s1F4PoIpAnERQ0hHTcNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="auctionABI.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <title>Advertisement Auction</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-------------------- React/JSX -------------------->
+
+    <script type="text/babel">
+
+        // Checking for a web3 instance
+        if (typeof web3 !== 'undefined') {
+                web3 = new Web3(window.ethereum);
+        } else {
+            // If no injected web3 instance is detected, fallback to Ganache.
+            web3 = new web3.providers.HttpProvider('http://127.0.0.1:7545');
+        }
+
+        // Function to connect to wallet
+        const connectWallet = (event) => {
+            event.preventDefault()
+            if(web3.currentProvider.isMetaMask) {
+                ethereum.enable()
+            } else {
+                window.open('https://metamask.io/', '_blank').focus()
+            }
+        }
+
+        // Variable Decalration and Initialization
+        const adAuction = new web3.eth.Contract(auctionABI, contractAddress)
+        let buttonName
+        let userAccount
+        let userRef = React.createRef()
+        let amountRef = React.createRef()
+        let textRef = React.createRef()
+        let counter = React.createRef()
+        let imgBtn = React.createRef()
+        
+        const array = ['product1', 'product2', 'product3', 'product4', 'product5', 'product6', 'product7', 'product8', 'product9', 'product10']
+
+        // Denotes the current selected active button/image
+        const handleButton = (name) => {
+            buttonName = name
+        }
+
+        // Function to render images
+        const images = array.map(image => {
+            return <button ref={imgBtn} className="button" key={image} onClick={(event) =>{event.preventDefault(); handleButton(image)}}>
+                <img src={`./images/${image}.jpg`} className="src-img" />
+            </button>
+        });
+
+        // Function to check current active account
+        const checkAccount = async () => {
+            var accountInterval = setInterval(async () => {
+                // Check if account has changed
+                if (web3.eth.getAccounts() !== userAccount) {
+                    userAccount =  await web3.eth.getAccounts();
+                    // Call some function to update the UI with the new account
+                    if(userAccount.length !== 0) {
+                        userRef.current.innerHTML = "<b>User</b> : " + userAccount
+                    } else {
+                        userRef.current.innerHTML = "<h3>Account not connected</h3>"
+                    }
+                }
+            }, 100);
+        }
+
+        // Main content of the page
+        const content = () => {
+
+            //---- UseState Declaration ----
+
+            const [text, settext] = React.useState(() => {
+                // getting the stored state value
+                const saved = localStorage.getItem("text");
+                const initialValue = JSON.parse(saved);
+                return initialValue || 'Your text will be here.';
+            })
+
+            const [image, setimage] = React.useState(() => {
+                // getting the stored state value
+                const saved = localStorage.getItem("image");
+                const initialValue = JSON.parse(saved);
+                return initialValue || "product11";
+            })
+
+            const [count, setcount] = React.useState('0')
+            const [owner, setowner] = React.useState('')
+            const [amount, setamount] = React.useState('')
+            
+            // Updating about section UI with current base amount
+            adAuction.methods.getAmount().call()
+            .then(result => setamount(web3.utils.fromWei(result, 'ether')))
+
+            // Updating about section UI with current Owner of the Ad
+            adAuction.methods.getOwner().call()
+            .then(result => setowner(result))
+
+            // Function to update about section UI after transaction
+            const setAbout = async () => {
+                const owner2 = await adAuction.methods.getOwner().call()
+                const amount2 = await adAuction.methods.getAmount().call()
+                setowner(owner2)
+                setamount(web3.utils.fromWei(amount2, 'ether'))
+            }
+
+            // Function to upadate the after successful transaction
+            const handleClick = async (event) => {
+                event.preventDefault()
+                adAuction.methods.makeAd().send({ from: userAccount[0], value: web3.utils.toWei(amountRef.current.value, 'ether') })
+                .then((result) => {
+                    setimage(buttonName)
+                    settext(textRef.current.value)
+                    setAbout()
+                    textRef.current.value = ""
+                    amountRef.current.value = ""
+                })
+            }
+
+            // Counter for the characters in textarea
+            const charCount = () => {
+                setcount(textRef.current.value.length)
+            }
+
+            // Storing Ad current UI state after each state change
+            React.useEffect(() => {
+                localStorage.setItem("text", JSON.stringify(text))
+                localStorage.setItem("image", JSON.stringify(image))
+            },[text],[image])
+
+            return (
+                <div className="content">
+                    <div className="ad">
+                        <img className="ad-img" src={`./images/${image}.jpg`} alt="An advertisement" />
+                        <h1 className="ad-text">{text}</h1>
+                    </div>
+                    <div className="about">
+                        <h3><b>Current Owner</b> ~ {owner}</h3>
+                        <h3><b>Current Amount</b> ~ {amount} ether</h3>
+                    </div>
+                    <form action="#0" className="content-form">
+                        <div className="img-div">{images}</div>
+                        <div className="textarea">
+                            <textarea ref={textRef} className="text" placeholder="Enter Text" rows="5" cols="50" maxLength="70" onChange={charCount}/>
+                            <h3 className="counter">{count}/70</h3>
+                        </div>
+                        <div className="confirm">
+                            <input type="number" ref={amountRef} placeholder="Enter Amount" id="amount" />
+                            <input className="btn" type="submit" value="Create Ad" onClick={(event) => handleClick(event)}/>
+                        </div>
+                    </form>
+                </div>
+            )
+        }
+
+        // The main complete App
+        const App = () => {
+            return (
+                <div className="App">
+                    
+                    <header>
+                        <span className="user" ref={userRef}></span>
+                        <h1 className="heading">Advertisement Auction</h1>
+                        <button className="connect btn" onClick={(event) => connectWallet(event)}>Connect Wallet</button>
+                    </header>
+                    {content()}
+                    <footer>
+                        &copy;2021 Advertisement Auction. All rights reserved.
+                        <br/><br/>Made by <a href="https://www.linkedin.com/in/anuragmunda" target="_blank">Anurag Munda</a>
+                    </footer>
+                </div>
+            )
+        }
+
+        checkAccount() // calling checkAccount function
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>

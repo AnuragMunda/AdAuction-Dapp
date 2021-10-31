@@ -1,0 +1,223 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient(to bottom left, rgb(19, 19, 19), rgb(31, 31, 31));
+    font-family: 'Raleway', sans-serif;
+    height: 100vh;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.App {
+    height: 100%;
+}
+
+header {
+    color: white;
+    padding-block: 2rem;
+    position: relative;
+    margin: 0 50px 60px;
+    border-bottom: 1px solid #e67e22;
+}
+
+.heading {
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 15px;
+}
+
+.user {
+    position: absolute;
+    font-size: 13px;
+    top: 40px;
+    left: 0;
+}
+
+.connect {
+    position: absolute;
+    top: 30px;
+    right: 0;
+}
+
+.content {
+    margin-bottom: 60px;
+}
+
+.about {
+    color: black;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.about h3 {
+    font-weight: 400;
+    background-color: #fff;
+    padding: 1rem;
+    width: 41%;
+    font-size: 15x;
+    border-radius: 50px;
+}
+
+.ad {
+    margin-inline: 5rem;
+    border-radius: 10px;
+    background-color: rgb(218, 218, 218);
+    display: flex;
+    padding: 1.7rem 2rem;
+    margin-bottom: 6.5rem;
+}
+
+.content-form {
+    margin-top: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.counter {
+    position: absolute;
+    right: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.textarea {
+    position: relative;
+}
+
+textarea {
+    font-size: 15px;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+input[type=number] {
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.img-div {
+    width: 99%;
+    display: flex;
+    gap: 1%;
+    overflow-x: scroll;
+}
+
+.button:focus {
+    border: 5px solid #e67e22;
+}
+
+.src-img {
+    height: 10rem;
+    width: 10rem;
+    cursor: pointer;
+}
+
+.ad-img {
+    max-height: 30rem;
+    width: 40%;
+    flex: 1;
+    border-radius: 10px;
+}
+
+.ad-text {
+    flex: 1;
+    align-self: center;
+    font-size: 2.3rem;
+    margin-left: 30px;
+}
+
+.confirm {
+    display: flex;
+    gap: 10px;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 2rem 0;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: 1px solid #e67e22;
+    color: #fff;
+    background-color: #e67e22;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    border: 1px solid #fff569;
+    background-color: #fff569;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    color: #e67e22;
+    font-weight: 700;
+    position: relative;
+}
+
+a::after {
+    content: "";
+    border-bottom: 2px solid #fff569;
+    width: 0;
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    left: 0;
+    transition: all 0.2s;
+}
+
+a:hover:after {
+    width: 100%;
+}
+
+a:hover {
+    color: #fff569;
+}
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(19, 19, 19);
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
