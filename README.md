@@ -2,7 +2,7 @@
 This is a Decenrtalised Application built on top of ethereum blockchain.
 In this Dapp you can change the advertisement with your custom Ad by paying more amount than the last owner of the ad.
 
-![Screenshot (110)](https://user-images.githubusercontent.com/87273737/140598084-08ba8903-3e32-4671-9087-f0675b3a497b.png)
+![Screenshot (115)](https://user-images.githubusercontent.com/87273737/140598185-e8ac7325-9b51-45e9-8416-b95128f4363a.png)
 
 ![Screenshot (111)](https://user-images.githubusercontent.com/87273737/140598085-6f62da58-c018-40e6-a864-c60a11a6f78b.png)
 
