@@ -29,6 +29,6 @@ Click [here](https://adauction-dapp.anuragmunda.repl.co/) to use the Dapp.
 
 ![Screenshot (112)](https://user-images.githubusercontent.com/87273737/140598089-97cf8f18-2102-451b-b145-8e21dcc62ae2.png)
 
-#### If the transaction is successful then your advertisement will be displayed on the advertisement board.
+#### If the transaction is successful then your advertisement and information will be displayed on the advertisement board.
 
 ![Screenshot (113)](https://user-images.githubusercontent.com/87273737/140598094-b285b8a1-2cf7-404f-bf40-076b62db9794.png)
